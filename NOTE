@@ -1,2 +1,5 @@
 This script will scrape the https://fmovies.to website to extract the <iframe> tag pertaining to the various embedded video storage websites.
 general synopsis, fmoviesScrape.py "fmoviesMovieOrSerialPageURL"
+
+stopping point, the website uses a nasty automation detection mechanism, might even be novel,
+	* tried to skirt this restriction by replacing all cdc_ substrings in the chromedriver binary, didn't work - problem persists
