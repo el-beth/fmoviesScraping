@@ -1,0 +1,7 @@
+while each individual embed clears console, using the console.clear() disable extension and browser console makes
+for a safe working envt.
+
+https://fmovies.to/series/lady-voyeur-zk4pp  // this redirects to first episode by itself
+https://fmovies.to/series/lady-voyeur-zk4pp/1-1
+https://fmovies.to/ajax/film/servers?id=zk4pp&vrf=SbzbZxY%3D&episode=1-1&token=
+https://fmovies.to/ajax/episode/info?id=56e845db13148ffe23b62830345ac4129e63f17310ec999954874f1763251323   // this returns something that seems like a base64 encoded string, but upon decoding looks garbled - might be encrypted.
