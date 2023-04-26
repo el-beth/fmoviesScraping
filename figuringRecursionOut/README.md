@@ -1,0 +1,2 @@
+<b>This directory is dedicated to experimentation with recursion in JS for the purpose of simulating
+sequential processing of a list in Javascript's synchronous, non-blocking execution environment.</b>
