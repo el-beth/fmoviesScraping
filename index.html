@@ -1,0 +1,147 @@
+<!-- stopped working on this as CORS settings disallow accessing frames that arent from the same origin -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fmovies Scraper</title>
+	<link rel="icon" type="image/x-icon" href="./favicon.png">
+	<style type="text/css">
+		* {
+			padding: 0px;
+			margin: 0px;
+		}
+		body {
+			width: 100%;
+			background: #111;
+			overflow-x: hidden;
+		}
+		input {
+			position: fixed;
+			top: 10px;
+			left: 3%;
+			border: #066 2px solid;
+			border-radius: 20px;
+			height: 40px;
+			width: 92%;
+			padding-left: 40px;
+			font-family: monospace;
+			font-size: 1.3em;
+			margin: 5px auto;
+			color: #123;
+		}
+		span {
+			color: #456;
+			position: absolute;
+			left: 65px;
+			top: 27px;
+			font-weight: bold;
+			z-index: 1;
+		}
+		iframe {
+			border: none;
+			width: 100%;
+			position: fixed;
+			top: 70px;
+			min-height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<span> &gt; </span>
+	<input placeholder="Paste URL here and press `Return`" id="inputElement" type="text" name="">
+	<iframe id="iframeElement" src="">
+		<!-- the X-Frame options header that FMovies.to will send will disable opening iframes of FMovies.to in other pages, so always have the Ignore X-Frame-Options Header extension enabled, install from https://addons.mozilla.org/en-US/firefox/addon/ignore-x-frame-options-header, while at it install  -->
+	</iframe>
+
+	<script type="text/javascript">
+		var global = top.document;
+		global.iframeLoaded = false;
+		global.iframeLoading = false;
+		global.iframeElt = $("iframe#iframeElement");
+		global.inputElt = $("input#inputElement");
+		
+		function removeBodyChildren(){
+			for (var bodyChild of document.body.children){
+				bodyChild.remove();
+			};
+			if (document.body.childElementCount > 0	){
+					setTimeout(removeBodyChildren, 0.1*1000);
+			}
+			else return 0;
+		}
+
+		function $(i){
+			return document.querySelector(i);
+		}
+
+		function startLoadingIframe(){
+			disableInput(global.inputElt);
+			global.iframeLoading = true;
+			global.iframeElt.src = global.inputElt.value;
+		}
+
+		function assertIframeLoaded(){
+			if (global.iframeLoaded === false && global.iframeLoading === true){
+				serverEltSelector = "div#servers > div.server.active";
+				try{
+					var serverElt = global.iframeElt.contentWindow.document.querySelector(serverEltSelector)
+					if (serverElt !== undefined){
+						// loading has ended
+						global.iframeLoaded = true;
+						global.iframeLoading = false;
+						enableInput(global.inputElt);
+						return 0;
+					}
+				} catch (error){
+					setTimeout(assertIframeLoaded, 1000);
+				};
+			}
+		}
+
+		function loadIframe(inputElt){
+			if (global.iframeLoaded === true && global.iframeLoading === false){
+				// finished loading
+				console.info('finished loading IFrame');
+				return 0;
+			} else if (global.iframeLoaded === false && global.iframeLoading === true){
+				// wait ( still loading ... )
+				setTimeout(loadIframe, 1000);
+			} else if (global.iframeLoaded === false && global.iframeLoading === false){
+				startLoadingIframe();
+				setTimeout(assertIframeLoaded, 500);
+			};
+		}
+
+		function disableInput(inputElt){
+			inputElt.disabled = true;
+		}
+
+		function enableInput(inputElt){
+			inputElt.disabled = false;
+		}
+
+
+		$("input#inputElement").addEventListener("keypress", () => {
+			if (event.key === "Enter"){
+				if (/^https:\/\/fmovies\.to\/(series\/.+|movie\/.+)$/.test(global.inputElt.value)){
+					disableInput(global.inputElt);
+					loadIframe(global.inputElt);
+				} else {
+					global.inputElt.value = "";
+					disableInput(global.inputElt);
+					global.inputElt.style.color = "red"; 
+					global.inputElt.placeholder = "WRONG INPUT";
+					setTimeout((inputElt) => {
+						inputElt.placeholder = "Paste URL here and press `Return`";
+						inputElt.style.color = "#123";
+						enableInput(inputElt);
+					} , 300, global.inputElt);
+				}
+			}
+		});
+
+	</script>
+</body>
+</html>
