@@ -115,11 +115,12 @@ function dispatchScraper(){
 function loadIframe(inputElt){
 	if (global.iframeLoaded === true && global.iframeLoading === false){
 		// finished loading
-		dispatchScraper();
+		// dispatchScraper();
 		console.info('finished loading IFrame');
 	} else if (global.iframeLoaded === false && global.iframeLoading === true){
 		// wait ( still loading ... )
 		setTimeout(loadIframe, 1000);
+		setTimeout(dispatchScraper, 1000)
 	} else if (global.iframeLoaded === false && global.iframeLoading === false){
 		startLoadingIframe();
 		setTimeout(assertIframeLoaded, 500);
