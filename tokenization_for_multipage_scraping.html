@@ -35,14 +35,12 @@
 			margin-left: 1px;
 			border-radius: 26px;
 			user-select: none;
-			background: #012;
 			transition-duration: 0.5s;
 		}
 		.dismiss-button:hover {
 			color: #0d5;
 		}
 		.dismiss-button:active {
-			background: #012;
 			color: #f12;
 			border: #f12 solid 1px;
 		}
@@ -53,7 +51,8 @@
 			border: 1px soid #7c6f64;
 			min-width: 30%;
 			color: #0d5;
-			font-size: 20px;
+			font-size: 16px;
+			font-weight: lighter;
 			border: 1px #0f7 solid;
 			margin: 20px auto;
 			padding: 10px 20px 12px 20px;
@@ -79,48 +78,13 @@
 	</style>
 </head>
 <body>
-	<input placeholder="Paste URLs here and press `Enter`" type="text" class="input-line">
+	<input autofocus="true" placeholder="Paste URLs here and press `Enter`" type="text" class="input-line">
 	<hr>
-	<div class="token-container">
+	<!-- <div class="token-container" title="This is it">
 		<span class="token-container">Argaw Damtie</span><span class="dismiss-button">ｘ</span>
-	</div>
-	<script>
-		var inputElt = $("input"), dismissButton = $$("i"), tokenFilter=/https?:\/\/(www\.)?fmovies\.to\/[^ ]+/ig;
+	</div> -->
+	<script src="./js.js">
 
-		function $(i){ return document.querySelector(i); };
-		function $$(i){ return document.querySelectorAll(i); };
-
-		function tokenize(){
-			// console.log(`arguments[0] = ${arguments[0]}\n\n\n\narguments[1]=${arguments[1]}`); return 0 ;
-			var inputElt = event.target;
-			if (event.key === "Enter"){
-				if (inputElt.value.length !== 0){
-					var text = inputElt.value;
-					var tokens = text.match(tokenFilter);
-					for (var i of tokens){
-						var d = document.createElement('div');
-						d.classList = "token-container";
-						var s = document.createElement('span');
-						s.classList = "token-container";
-						s.innerText = i;
-						var x = document.createElement('span');
-						x.classList = "dismiss-button";
-						x.addEventListener("click", removeToken);
-						x.innerText = "ｘ";
-						d.appendChild(s);
-						d.appendChild(x);
-						$("body").appendChild(d);
-					};
-					inputElt.value = "";
-				}
-			}
-		};
-		inputElt.addEventListener("keypress", tokenize)
-
-		$('.dismiss-button').addEventListener('click', removeToken);
-		function removeToken(){
-			event.target.parentElement.remove();
-		}
 	</script>
 </body>
 </html>
